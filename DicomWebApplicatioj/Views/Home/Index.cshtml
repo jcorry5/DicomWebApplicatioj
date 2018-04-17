@@ -1,0 +1,194 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="wrapper">
+
+    <div class="side-bar" id="side-menu">
+        <div id="controlPanel">
+            <a id="closebutton" aria-label="close" class="closeButton glyphicon-glyphicon-remove">&times;</a>
+            <div class="sidebar-header">
+                <h4 class="menu-headers">Control Panel</h4>
+            </div>
+            <div class="sidebar-body" id="control-panel">
+              
+
+                <input type="button" id="openTestImage"data-toggle="tooltip" title="opens a test image that can be used to practice with." value="Open test image" class="btn btn-link  menu-Items" />
+
+                <input type="button" value="Image controls" id="ImageControl" class="btn btn-link menu-Items">
+                <div id="imageControls">
+
+                    <input id="penRange" data-toggle="tooltip" title="The thickness of the lines on each annotation"type="range" min="1" max="5" value="2" step="1" onchange="penSize(this.value)" class="menu-Items " />
+                    <p class="submenu-Items "> Pen size: </p>
+                    <p id="pensize" class="submenu-Items">2</p>
+
+                    <br />
+                    <div class="btn-group menu-Items">
+                        <button id="undo" type="button" data-toggle="tooltip" title="undoes the last annotation drawn, can be used after reloading previous annotations"class="btn btn-primary btn-xs unredo-Items" >undo</button>
+                        <button id="redo" type="button"data-toggle="tooltip" title="redraws the most recent undone annotation." class="btn btn-primary btn-xs unredo-Items" >redo</button>
+                    </div>
+
+                    <br />
+
+                    <a href="#" type="button" id="downloadImage"data-toggle="tooltip" title="Allows you to save a jpg of the image with the annotations drawn on." class="btn btn-link submenu-Items" download="annotations.jng">Download Image</a>
+
+                    <input type="button" value="Erase all" id="erase" data-toggle="tooltip" title="Erases all annotations, can not be undone."class="btn btn-link submenu-Items">
+
+                    <input type="button" id="closeImage" value="Close image" data-toggle="tooltip" title="Closes the image, any unsaved annotations will be lost."class="btn btn-link submenu-Items" />
+
+                </div>
+
+                <br />
+
+
+                <input type="button" id="colourdrop" value="Colour chart" class="btn btn-link  menu-Items" />
+                <div id="ColourPaletteAcc">
+                    <table id="colourPalatteTable" class="table">
+                        <tr>
+                            <td style="background-color: red" onclick="colourChoice('red')"></td>
+                            <td style="background-color: blue" onclick="colourChoice('blue')"></td>
+                            <td style="background-color: green" onclick="colourChoice('green')"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: black" onclick="colourChoice('black')"></td>
+                            <td style="background-color: white" onclick="colourChoice('white')"></td>
+                            <td style="background-color: gray" onclick="colourChoice('red')"></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: yellow" onclick="colourChoice('yellow')"></td>
+                            <td style="background-color: orange" onclick="colourChoice('orange')"></td>
+                            <td style="background-color: pink" onclick="colourChoice('pink')"></td>
+                        </tr>
+                    </table>
+
+                </div>
+                <input type="button" value="Shape menu" id="shapeAccbutton" class="btn btn-link  menu-Items" />
+                <div id="shapeAccordaian">
+
+                    <input type="button" value="Rectangle" onclick="shapes('Rectangle')" class="btn btn-link  submenu-Items" />
+
+                    <input type="button" value="Quadrangle" onclick="shapes('Quadrilateral')" class="btn btn-link  submenu-Items" />
+
+                    <input type="button" value="Arrow" onclick="shapes('Arrow')" class="btn btn-link  submenu-Items" />
+
+                    <input type="button" value="Line" onclick="shapes('Line')" class="btn btn-link  submenu-Items" />
+
+
+                    <div class="btn-group btn-groups">
+                        <p style="color:white">labelling formats for annotations:</p>
+                        <button data-toggle="tooltip" title="Quadrilaterals labelled with letters first, then a number added for each quadrant." type="button" class="btn btn-primary btn-xs" onclick="labelFormat('letterFirst')">A,B,C</button>
+                        <button data-toggle="tooltip" title="Quadrilaterals labelled with numbers first, then a letter to " type="button" class="btn btn-primary btn-xs" onclick="labelFormat('numberFirst')">1,2,3</button>
+                        <button data-toggle="tooltip" title="All annotations turned off." type="button" class="btn btn-primary btn-xs" onclick="labelFormat('none')">Off</button>
+                    </div>
+                    <div class="btn-group btn-groups">
+                        <p style="color:white">Comments toggle:</p>
+                        <button data-toggle="tooltip" title="Each annotation made will prompt for a comment to be added to it" type="button" class="btn btn-primary btn-xs" onclick="toggleComment('ON')">ON</button>
+                        <button data-toggle="tooltip" title="Comments will be turned off and not prompted for." type="button" class="btn btn-primary btn-xs" onclick="toggleComment('OFF')">OFF</button>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div id="notificationsDiv" class="footer">
+
+            <ul id="notifications"></ul>
+        </div>
+
+    </div>
+    <div class="main-body" id="image-container">
+        <span class=" glyphicon glyphicon-menu-hamburger" style="font-size:20px; cursor:pointer;" id="controlMenuButton">Open Menu</span>
+        <div id="fileSelectdiv">
+            <div id="image-selector">
+                <p class="main-text">Use this section to choose image files to annotate</p>
+                <p class="main-text">supported file types are .png .jpeg . jpg or .gif</p>
+                <input type="file" id="imagefile" name="files[]" class="input" />
+
+                <div id="dropZone" class="dropZone">Drop image files here</div>
+            </div>
+            <br />
+            <br />
+            <div id="dicom-selector">
+
+                <p class="main-text">Use this section to choose dicom files to annotate</p>
+                <p class="main-text">downloaded images will be in a jpg format, the original dicom file will not be changed</p>
+                <input type="file" id="dicomfile" name="files[]" class="input" />
+
+                <div id="dropZoneDicom" class="dropZone">Drop dicom files here</div>
+            </div>
+
+
+            <p class="main-text">drag and drop  an image file to begin or use button to browse files!</p>
+        </div>
+        <div id="canvasDiv" style="width:100%; height:100%;">
+            <div id="cornerstoneDiv">
+                <canvas class="canvas" id="image-canvas">You're browser does not support the Canvas element necessary for this function.</canvas>
+                <canvas class="canvas" id="anno-canvas"></canvas>
+                <p id="errorMessages"></p>
+            </div>
+
+           
+
+
+        </div>
+        
+        <p id="workingFile"></p>
+
+    </div>
+    <div class="side-bar " id="right-side-menu">
+        <div id="menuWrapper">
+            <h3 style="color:snow;">Storage Controls</h3>
+            <div id="DatabaseMenu">
+                <input type="button" id="DataControl"data-toggle="tooltip" title="Save to local Database, Annotations will not be saved to Server." value="Local database" class="btn btn-link menu-Items" />
+                <input type="button" id="ServerControl" value="Server database" data-toggle="tooltip" title="Save annotations to server." class="btn btn-link menu-Items" />
+            </div>
+
+            <div id="ServerControls">
+                <input type="button" id="LoadServer" value="Load Server data" data-toggle="tooltip" title="Loads all annotations for this image and draws them onto the canvas, can be undone one at at time if required."class="btn btn-link menu-Items" />
+
+                <input type="button" id="saveServer"data-toggle="tooltip" title="Annotations will be saved in addition to anny currently saved for this image" value="Save to server" class="btn btn-link menu-Items" />
+                <input type="button" id="updateServer" value="Update Server" data-toggle="tooltip" title="Replaces and old annotations saved, with the ones drawn."class="btn btn-link menu-Items" />
+                <input type="button" id="DeleteServer" value="Delete all from server" data-toggle="tooltip" title="Removes all annotations for this image on server."class="btn btn-link menu-Items" />
+                <input type="button" id="CloseServer" value="close"  class="btn btn-link submenu-Items" />
+            </div>
+            <div id="LocalControls">
+
+                <div>
+                    <input type="button" id="SearchLocal"data-toggle="tooltip" title="Search the database to see if annotations are available for this file from local storage" value="Search local" class="btn btn-link menu-Items" />
+                    <input type="button" id="LoadLocal"data-toggle="tooltip" title="Any annotations saved for this file will be loaded and drawn" value="Load local" class="btn btn-link menu-Items" />
+                </div>
+                <div>
+                    <input type="button" id="saveLocal"data-toggle="tooltip" title="Annotations will be saved in addition to anny currently saved for this image" value="Save locally" class="btn btn-link menu-Items" />
+                </div>
+                <div>
+                    <input type="button" id="deleteall"data-toggle="tooltip" title="All annotations will be deleted from local storage for this file" value="Delete local data" class="btn btn-link menu-Items" />
+                </div>
+
+                <input type="button" id="CloseLocal" value="close" class="btn btn-link submenu-Items" />
+
+
+            </div>
+        </div>
+        <div id="InfoPanel">
+
+
+            <div id="savedAnnotations">
+                <h3 style="color:snow;"> Annotations</h3>
+                <div id="listDiv" >
+                    <ul id="annotationlist" style="background-color: snow"></ul>
+                </div>
+                
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,213 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    clip: auto;
+    position: absolute;
+    overflow: hidden;
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#workingFile{
+    visibility:hidden;
+
+}
+#InfoPanel{
+    overflow-y:auto;
+
+}
+.side-bar {
+    padding-left: 10px;
+    padding-right: 20px;
+    background-color: #222;
+    min-height: 100vh;
+    min-width: 200px;
+    width:15%;
+    
+    
+}
+#controlPanel{
+    position:absolute;
+    overflow-y:hidden;
+    max-height:70%;
+    min-height:70%;
+    width: 20%;
+    max-width: 200px;
+
+}
+
+#errorMessages{
+    color: red;
+}
+#listDiv {
+    position: absolute;
+    overflow-y: scroll;
+    width:250px;
+    height:60%;
+
+}
+
+#savedAnnotations{
+    height:inherit;
+}
+#annotationlist{
+    list-style-type:none;
+    padding: 10px 10px 10px 10px;
+    height:100%;
+
+
+
+}
+
+li{
+    font-size:12px;
+}
+
+.menu-headers {
+    padding: 8px 8px 8px 32px;
+    color: #818181;
+    display: block;
+}
+
+.menu-Items {
+    padding: 8px 8px 8px 24px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #818181;
+    display: block;
+    float: left;
+    clear:both;
+}
+#penRange{
+    width: 75%;
+    margin:auto;
+    float:none;
+}
+
+.submenu-Items {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 12px;
+    color: #818181;
+    display: block;
+    clear:both;
+    float: left;
+}
+
+.menu-Items:hover {
+    color: #f1f1f1;
+}
+#menuWrapper{
+    width:250px;
+    height:25%
+}
+#InfoPanel{
+    width:250px;
+    overflow-y:auto;
+    height:70%;
+}
+#right-side-menu {
+    right: 0;
+    max-width: 300px;
+    width: 35%;
+    clear:both;
+}
+
+.collapsed {
+    display: none;
+}
+
+#image-canvas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    z-index: 0;
+}
+
+.main-body {
+
+    width: 100%;
+    min-width: 500px;
+    float: left;
+    min-height: 100vh;
+    position: relative;
+    background-color: grey;
+}
+
+.image-selector {
+    width: 50%;
+    float: left;
+}
+
+.dicom-selector {
+    width: 50%;
+    float: right;
+}
+
+.canvas {
+    position: absolute;
+    margin-top: 25px;
+    margin-left:50px;
+
+}
+
+
+.table {
+    border-collapse: collapse;
+   
+    height: 150px;
+    width: 150px;
+}
+
+td {
+    width: 33%;
+    height: 50px;
+    float: left;
+}
+
+.footer {
+    position: absolute;
+    bottom: 30px;
+   background-color:snow;
+    height: 10%;
+    width: 160px;
+    overflow-y:auto;
+    min-height:150px;
+}
+
+.dropZone {
+    border: 2px dashed #bbb;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    font: 20pt bold 'Vollkorn';
+    color: #bbb;
+    height: 200px;
+    width: 50%;
+    margin: auto;
+}
+
+.main-text {
+    margin:auto;
+    width: 50%;
+    color:beige;
+}
+
+.input{
+    width: 50%;
+    margin: auto;
+
+}
+
+.btn-groups{
+    padding-left: 32px;
+}
