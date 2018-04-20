@@ -1,9 +1,6 @@
-﻿// Configure bundling and minification for the project.
-// More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
     "outputFileName": "wwwroot/css/site.min.css",
-    // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/css/site.css"
     ]
@@ -13,12 +10,87 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ],
-    // Optionally specify minification options
     "minify": {
       "enabled": true,
       "renameLocals": true
-    },
-    // Optionally generate .map file
-    "sourceMap": false
+    }
+  },
+  {
+    "outputFileName": "wwwroot/dist/cornerstoneTools.min.js",
+    "inputFiles": [
+      "wwwroot/dist/cornerstoneTools.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/cornerstoneWADOImageLoader.min.js",
+    "inputFiles": [
+      "wwwroot/dist/cornerstoneWADOImageLoader.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/cornerstoneWADOImageLoaderCodecs.min.js",
+    "inputFiles": [
+      "wwwroot/dist/cornerstoneWADOImageLoaderCodecs.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/cornerstoneWADOImageLoaderWebWorker.min.js",
+    "inputFiles": [
+      "wwwroot/dist/cornerstoneWADOImageLoaderWebWorker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/dataDictionary.min.js",
+    "inputFiles": [
+      "wwwroot/dist/dataDictionary.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/dicomParser.min.js",
+    "inputFiles": [
+      "wwwroot/dist/dicomParser.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/pako.min.min.js",
+    "inputFiles": [
+      "wwwroot/dist/pako.min.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/rusha.min.min.js",
+    "inputFiles": [
+      "wwwroot/dist/rusha.min.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/uids.min.js",
+    "inputFiles": [
+      "wwwroot/dist/uids.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/charLS-FixedMemory-browser.min.js",
+    "inputFiles": [
+      "wwwroot/dist/charLS-FixedMemory-browser.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/initializeWebWorkers.min.js",
+    "inputFiles": [
+      "wwwroot/dist/initializeWebWorkers.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/jpeg.min.js",
+    "inputFiles": [
+      "wwwroot/dist/jpeg.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/dist/openJPEG-FixedMemory.min.js",
+    "inputFiles": [
+      "wwwroot/dist/openJPEG-FixedMemory.js"
+    ]
   }
 ]

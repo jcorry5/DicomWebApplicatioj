@@ -125,14 +125,26 @@ li{
     display: none;
 }
 
-#image-canvas {
+#image-canvas, #anno-canvas {
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid black;
     z-index: 0;
+    position: absolute;
+    margin-top: 50px;
+    margin-left: 50px;
 }
 
+.canvasContainers{
+    position:absolute;
+}
+
+span {
+    font-size: 14px;
+    float: left;
+    color: white;
+}
 .main-body {
 
     width: 100%;
@@ -152,14 +164,6 @@ li{
     width: 50%;
     float: right;
 }
-
-.canvas {
-    position: absolute;
-    margin-top: 25px;
-    margin-left:50px;
-
-}
-
 
 .table {
     border-collapse: collapse;

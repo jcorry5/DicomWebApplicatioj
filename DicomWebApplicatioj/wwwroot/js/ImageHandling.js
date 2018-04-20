@@ -1,11 +1,14 @@
 ﻿
+
 $(document).ready(function () {
+    
     var imageType = false;
     var canvas, canvas2, context;
     var MAX_HEIGHT = window.innerHeight;
     var imagedata;
     var imageOpen = false;
-
+    var byteArray;
+    var dicom = false;
 
     //Event handler to open test image for tutorial
     var openTest = document.getElementById('openTestImage');
@@ -72,7 +75,7 @@ $(document).ready(function () {
 
     document.getElementById('imagefile').addEventListener('change', function (e) {
 
-        const file = e.target.files[0];
+        var file = e.target.files[0];
 
         var imageType = 'image.*';
         //verify that it is an image file or else throw an error
@@ -139,12 +142,11 @@ $(document).ready(function () {
         imagedata = evt;
 
 
-        $(document).ready(function () {
-            $('#canvasDiv').show();
-            $('#fileSelectdiv').hide();
-            $('#closeImage').show();
-            $('#right-side-menu').show();
-        });
+        $('#canvasWrapper').show();
+        $('#fileSelectdiv').hide();
+        $('#closeImage').show();
+        $('#right-side-menu').show();
+
         canvas = document.getElementById("image-canvas");
         canvas2 = document.getElementById("anno-canvas");
         var image = new Image();
@@ -175,8 +177,8 @@ $(document).ready(function () {
 
         }
     });
-  
-   
+
+
 
 
     document.getElementById('undo').addEventListener('click', function () {
@@ -184,13 +186,17 @@ $(document).ready(function () {
     });
 
     function RedrawCanvas() {
-
-        if (imageType === false) {
-            render(imagedata);
-            imageOpen = true;
+        if (!dicom) {
+            if (imageType === false) {
+                render(imagedata);
+                imageOpen = true;
+            } else {
+                openTestImage();
+            }
         } else {
-            openTestImage();
+            parseByteArray(byteArray);
         }
+
     }
 
     // download function to download the image as a .png file with the annotations on the image.
@@ -211,172 +217,123 @@ $(document).ready(function () {
     // EVERYTHING FROM HERE IS FOR PARSING AND LOADING DICOM FILES
 
 
-    //document.getElementById('openTestDicom').addEventListener('click', function () {
-    //    OpenTestDicomImage();
-    //});
+    cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
 
+    // this function gets called once the user drops the file onto the div
+    function handleFileSelect(evt) {
+        
+        evt.stopPropagation();
+        evt.preventDefault();
 
-    //function OpenTestDicomImage() {
-    //    var file = new File();
-    //    file = file.source('../images/test.dcm');
-    //    const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-    //    loadAndViewImage(imageId);
-    //}
+        // Get the FileList object that contains the list of files that were dropped
+        const files = evt.dataTransfer.files;
 
+        // this UI is only built for a single file so just dump the first one
+        file = files[0];
+        const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+        loadAndViewImage(imageId);
+    }
 
+    function handleDragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+    }
 
-    ////handles the drag and drop events of the dicom files
-    //function handleDragOver(evt) {
-    //    evt.stopPropagation();
-    //    evt.preventDefault();
-    //    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-    //}
-
-
-
-
-
-
-    //// this function gets called once the user drops the file onto the div
-    //function handleFileSelect(evt) {
-    //    evt.stopPropagation();
-    //    evt.preventDefault();
-
-    //    // Get the FileList object that contains the list of files that were dropped
-    //    const files = evt.dataTransfer.files;
-
-    //    // this UI is only built for a single file so just dump the first one
-    //    file = files[0];
-    //    const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-    //    console.log("IMAGEid");
-    //    loadAndViewImage(imageId);
-    //    console.log("handling");
-    //}
-
-
-    //let loaded = false;
-
-    //function loadAndViewImage(imageId) {
-    //    $(document).ready(function () {
-    //        $('#canvasDiv').show();
-    //        $('#fileSelectdiv').hide();
-    //        $('#closeImage').show();
-    //        $('#right-side-menu').show();
-    //    });
-
-    //    const element = document.getElementById('cornerstoneDiv');
-
-    //    const start = new Date().getTime();
-
-    //    cornerstone.loadImage(imageId).then(function (image) {
-    //        console.log("here");
-    //        const viewport = cornerstone.getDefaultViewportForImage(element, image);
-    //        //document.getElementById('toggleModalityLUT').checked = (viewport.modalityLUT !== undefined);
-    //        //document.getElementById('toggleVOILUT').checked = (viewport.voiLUT !== undefined);
-    //        cornerstone.displayImage(element, image, viewport);
-    //        if (loaded === false) {
-    //            cornerstoneTools.mouseInput.enable(element);
-    //            cornerstoneTools.mouseWheelInput.enable(element);
-    //            cornerstoneTools.wwwc.activate(element, 1); // ww/wc is the default tool for left mouse button
-    //            cornerstoneTools.pan.activate(element, 2); // pan is the default tool for middle mouse button
-    //            cornerstoneTools.zoom.activate(element, 4); // zoom is the default tool for right mouse button
-    //            cornerstoneTools.zoomWheel.activate(element); // zoom is the default tool for middle mouse wheel
-
-    //            cornerstoneTools.imageStats.enable(element);
-    //            loaded = true;
-    //        }
-
-    //        function getTransferSyntax() {
-    //            const value = image.data.string('x00020010');
-    //            return value + ' [' + uids[value] + ']';
-    //        }
-
-    //        function getSopClass() {
-    //            const value = image.data.string('x00080016');
-    //            return value + ' [' + uids[value] + ']';
-    //        }
-
-    //        function getPixelRepresentation() {
-    //            const value = image.data.uint16('x00280103');
-    //            if (value === undefined) {
-    //                return;
-    //            }
-    //            return value + (value === 0 ? ' (unsigned)' : ' (signed)');
-    //        }
-
-    //        function getPlanarConfiguration() {
-    //            const value = image.data.uint16('x00280006');
-    //            if (value === undefined) {
-    //                return;
-    //            }
-    //            return value + (value === 0 ? ' (pixel)' : ' (plane)');
-    //        }
+    // Setup the dnd listeners.
+    const dropZone = document.getElementById('dropZoneDicom');
+    dropZone.addEventListener('dragover', handleDragOver, false);
+    dropZone.addEventListener('drop', handleFileSelect, false);
 
 
 
-    //    }, function (err) {
-    //        alert(JSON.stringify(err));
-    //        console.log(err);
-    //        });
+    let loaded = false;
+ 
+    function loadAndViewImage(imageId) {
+        "use strict";
+        const element = document.getElementById('cornerstoneDiv');
+        const start = new Date().getTime();
+        loading(imageId);
+        function loading(imageId) {
+            cornerstone.loadImage(imageId).then(function (image) {
+                console.log(image);
+                const viewport = cornerstone.getDefaultViewportForImage(element, image);
+                document.getElementById('toggleModalityLUT').checked = (viewport.modalityLUT !== undefined);
+                document.getElementById('toggleVOILUT').checked = (viewport.voiLUT !== undefined);
+                cornerstone.displayImage(element, image, viewport);
+                if (loaded === false) {
+                    cornerstoneTools.mouseInput.enable(element);
+                    cornerstoneTools.mouseWheelInput.enable(element);
+                    cornerstoneTools.wwwc.activate(element, 1); // ww/wc is the default tool for left mouse button
+                    cornerstoneTools.pan.activate(element, 2); // pan is the default tool for middle mouse button
+                    cornerstoneTools.zoom.activate(element, 4); // zoom is the default tool for right mouse button
+                    cornerstoneTools.zoomWheel.activate(element); // zoom is the default tool for middle mouse wheel
+                    cornerstoneTools.imageStats.enable(element);
+                    loaded = true;
+                }
 
 
-    //}
 
-    ////initializing the cornerstone library to deal
-    //cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
-    //const element = document.getElementById('canvasDiv');
-    //cornerstone.enable(element);
-
-    //document.getElementById('dicomfile').addEventListener('change', function (e) {
-    //    // Add the file to the cornerstoneFileImageLoader and get unique
-    //    // number for that file
-    //    const file = e.target.files[0];
-    //    const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-    //    console.log("IMAGEid");
-    //    loadAndViewImage(imageId);
-    //    console.log("handling");
-    //});
+                document.getElementById('patientId').textContent = image.data.string('x00100020');
+                document.getElementById('patientName').textContent = image.data.string('x00100010');
+                document.getElementById('patientDob').textContent = image.data.string('x20010101');
+                document.getElementById('patientSex').textContent = image.data.string('x00100040');
+                document.getElementById('studyInformation').textContent = image.data.string('x00081030');
+                document.getElementById('studyId').textContent = image.data.string('x00200010');
+                document.getElementById('bodyPart').textContent = image.data.string('x00180015');
+                document.getElementById('sopInstanceUid').textContent = image.data.string('x00080018');
+                document.getElementById('referencedSOPClassUID').textContent = image.data.string('x00100020');
+                document.getElementById('manufacturer').textContent = image.data.string('x00080070');
+                document.getElementById('institution').textContent = image.data.string('x00080080');
 
 
+                $('#canvasWrapper').show();
+                $('#fileSelectdiv').hide();
+                $('#closeImage').show();
+                $('#right-side-menu').show();
+            }, function (err) {
+                alert(err);
 
-    //// Setup the dnd listeners.
-    //var dropZone = document.getElementById('dropZoneDicom');
-    //dropZone.addEventListener('dragover', handleDragOver, false);
-    //dropZone.addEventListener('drop', handleFileSelect, false);
-
-    ////function getBlobUrl(url) {
-    ////    const baseUrl = window.URL || window.webkitURL;
-    ////    const blob = new Blob([`importScripts('${url}')`], { type: 'application/javascript' });
-    ////    console.log("failing here?");
-    ////    return baseUrl.createObjectURL(blob);
-
-    ////}
-    //////web workers and codecs to decode and parse the dicom files.
-    ////const webWorkerUrl = getBlobUrl('~/js/conerstoneWADOImageLoaderWebWorker.js');
-    ////const codecsUrl = getBlobUrl('~/js/conerstoneWADOImageLoaderCodecs.js');
+            });
+        }
+        
+    }
 
 
-    ////initialize the loader to handle the dicom files
-    //try {
+    const element = document.getElementById('cornerstoneDiv');
+    cornerstone.enable(element);
 
-    //    window.cornerstoneWADOImageLoader.webWorkerManager.initialize({
-    //        maxWebWorkers: 4,
-    //        startWebWorkersOnDemand: true,
-    //        webWorkerPath: '../dist/cornerstoneWADOImageLoaderWebWorker.js',
-    //       webWorkerTaskPaths: [],
-    //        taskConfiguration: {
-    //            decodeTask: {
-    //                loadCodecsOnStartup: true,
-    //                initializeCodecsOnStartup: false,
-    //                codecsPath: '../dist/cornerstoneWADOImageLoaderCodecs.js',
-    //                usePDFJS: false,
-    //                strict: false
-    //            }
-    //        }
-    //    });
-    //} catch (error) {
-    //    throw new Error('cornerstoneWADOImageLoader is not loaded');
-    //}
+    document.getElementById('dicomfile').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+        loadAndViewImage(imageId);
+    });
+
+    document.getElementById('toggleModalityLUT').addEventListener('click', function () {
+        const applyModalityLUT = document.getElementById('toggleModalityLUT').checked;
+        console.log('applyModalityLUT=', applyModalityLUT);
+        const image = cornerstone.getImage(element);
+        const viewport = cornerstone.getViewport(element);
+        if (applyModalityLUT) {
+            viewport.modalityLUT = image.modalityLUT;
+        } else {
+            viewport.modalityLUT = undefined;
+        }
+        cornerstone.setViewport(element, viewport);
+    });
+
+    document.getElementById('toggleVOILUT').addEventListener('click', function () {
+        const applyVOILUT = document.getElementById('toggleVOILUT').checked;
+        console.log('applyVOILUT=', applyVOILUT);
+        const image = cornerstone.getImage(element);
+        const viewport = cornerstone.getViewport(element);
+        if (applyVOILUT) {
+            viewport.voiLUT = image.voiLUT;
+        } else {
+            viewport.voiLUT = undefined;
+        }
+        cornerstone.setViewport(element, viewport);
+    });
 
 
 

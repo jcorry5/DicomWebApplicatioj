@@ -1,0 +1,78 @@
+﻿@model DicomWebApplicatioj.Models.Annotation
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Annotation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.filename)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.filename)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.shape)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.shape)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.pensize)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.pensize)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.colour)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.colour)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.X)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.X)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Y)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Y)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastX)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastX)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastY)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastY)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.labelFormat)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.labelFormat)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.AnnotationNum">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

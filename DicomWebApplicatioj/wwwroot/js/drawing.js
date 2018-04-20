@@ -106,7 +106,7 @@ $(document).ready(function () {
     $('#closeImage').click(function () {
 
         context.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-        $('#canvasDiv').hide();
+        $('#canvasWrapper').hide();
         $('#closeImage').hide();
         $('#erase').hide();
         $('#fileSelectdiv').show();
@@ -219,11 +219,14 @@ $(document).ready(function () {
 
     //gets the offset of the mouse and sets the X and Y coordinates for use in drawing the images
     function down(e) {
-        canvasx = $(canvas).offset().left;
-        canvasy = $(canvas).offset().top;
-        last_mousex = parseInt(e.clientX - canvasx);
-        last_mousey = parseInt(e.clientY - canvasy);
-        mousedown = true;
+        if (shape !== "Text") {
+            canvasx = $(canvas).offset().left;
+            canvasy = $(canvas).offset().top;
+            last_mousex = parseInt(e.clientX - canvasx);
+            last_mousey = parseInt(e.clientY - canvasy);
+            mousedown = true;
+        }
+
 
     }
 
@@ -239,47 +242,63 @@ $(document).ready(function () {
             shapesUndone = false;
 
         }
-        //prompts the user if they want to add comments to the diagrams that can be saved.
-        if (commentToggle === "ON") {
-            comment = prompt("comment:");
 
+
+
+
+        //prompts the user if they want to add comments to the diagrams that can be saved.
+        if (commentToggle === "ON" || shape === "Text") {
+            comment = prompt("comment:");
+            if (comment === null) {
+                comment = "";
+            }
         }
         //if comments are turned on, creates a list note of the comment made.
-        var listItem = document.createElement('li');
-        if (label === 'numberFirst' && commentToggle === "ON") {
 
-            listItem.innerHTML = shape + " " + parseInt(num + 1) + ": " + comment;
-            menu.appendChild(listItem);
-        } else if (label === 'letterFirst' && commentToggle === "ON") {
+        if (shape === "Text" && comment === "") {
+            console.log("text cancelled");
+        } else {
+            var listItem = document.createElement('li');
+            if (label === 'numberFirst' && commentToggle === "ON") {
 
-            listItem.innerHTML = shape + " " + getAlphabet() + ": " + comment;
-            menu.appendChild(listItem);
+                listItem.innerHTML = shape + " " + parseInt(num + 1) + ": " + comment;
+                menu.appendChild(listItem);
+            } else if (label === 'letterFirst' && commentToggle === "ON") {
+
+                listItem.innerHTML = shape + " " + getAlphabet() + ": " + comment;
+                menu.appendChild(listItem);
+            }
+            if (label === 'numberFirst' && commentToggle === "OFF") {
+
+                listItem.innerHTML = shape + " " + parseInt(num + 1);
+                menu.appendChild(listItem);
+            } else if (label === 'letterFirst' && commentToggle === "OFF") {
+
+                listItem.innerHTML = shape + " " + getAlphabet();
+                menu.appendChild(listItem);
+            }
         }
-        if (label === 'numberFirst' && commentToggle === "OFF") {
-
-            listItem.innerHTML = shape + " " + parseInt(num + 1);
-            menu.appendChild(listItem);
-        } else if (label === 'letterFirst' && commentToggle === "OFF") {
-
-            listItem.innerHTML = shape + " " + getAlphabet();
-            menu.appendChild(listItem);
-        }
+        
 
 
         //mouse down becomes false, so the upper canvas gets wiped clean the pernament annotation is added to the canvas with the image,
         //calls the context to begin the drawing of the shape and sets the variables to be used in the drawing.
         mousedown = false;
+        AnotationsSaved = false;
+
         context.beginPath();
         context.strokeStyle = colour;
-        context.lineWidth = penWidth;
         context.font = "12px Arial";
+        context.lineWidth = penWidth;
+
         width = mousex - last_mousex;
         height = mousey - last_mousey;
         DrawShape();
-        AnotationsSaved = false;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         pushToArray();
+
+
 
     }
 
@@ -336,23 +355,31 @@ $(document).ready(function () {
                 context.lineWidth = 2;
                 if (label === 'numberFirst') {
                     num++;
-                    context.strokeText(num + iterateAlphabet(), mousex, mousey);
-                    context.strokeText(num + iterateAlphabet(), last_mousex, mousey);
-                    context.strokeText(num + iterateAlphabet(), mousex, last_mousey);
-                    context.strokeText(num + iterateAlphabet(), last_mousex, last_mousey);
+                    context.strokeText(num + " " + iterateAlphabet(), mousex, mousey);
+                    context.strokeText(num + " " + iterateAlphabet(), last_mousex, mousey);
+                    context.strokeText(num + " " + iterateAlphabet(), mousex, last_mousey);
+                    context.strokeText(num + " " + iterateAlphabet(), last_mousex, last_mousey);
                 } else if (label === 'letterFirst') {
                     char++;
-                    context.strokeText(getAlphabet() + iterateNumbers(), mousex, mousey);
-                    context.strokeText(getAlphabet() + iterateNumbers(), last_mousex, mousey);
-                    context.strokeText(getAlphabet() + iterateNumbers(), mousex, last_mousey);
-                    context.strokeText(getAlphabet() + iterateNumbers(), last_mousex, last_mousey);
+                    context.strokeText(getAlphabet() + " " + iterateNumbers(), mousex, mousey);
+                    context.strokeText(getAlphabet() + " " + iterateNumbers(), last_mousex, mousey);
+                    context.strokeText(getAlphabet() + " " + iterateNumbers(), mousex, last_mousey);
+                    context.strokeText(getAlphabet() + " " + iterateNumbers(), last_mousex, last_mousey);
 
                 }
-
-
                 break;
+            case "Text":
+                if (comment !== "" || comment !== null) {
+                    num++;
+                    context.strokeText(comment, mousex, mousey);
+                    break;
+                } else {
+                    break;
+                }
+                
         }
     }
+
 
     //move function that draws on the top most canvas, clears on every call to allow smooth animation of the function drawing.
     function move(e) {
@@ -616,7 +643,7 @@ $(document).ready(function () {
 
     //called automatically if the request is successful.
     request.onsuccess = function (e) {
-        note.innerHTML += "<li>Database created.</li>";
+        note.innerHTML += "<li>Database Connected.</li>";
         console.log("success creating database");
         db = request.result;
 
@@ -677,11 +704,11 @@ $(document).ready(function () {
 
 
     };
-    document.getElementById("SearchLocal").addEventListener('click', function(){
+    document.getElementById("SearchLocal").addEventListener('click', function () {
         search();
     });
     function search() {
-        var count=0;
+        var count = 0;
         var trans = db.transaction('Annotation', 'readonly');
         var store = trans.objectStore('Annotation');
         var index = store.index('annotationNum');
@@ -692,7 +719,7 @@ $(document).ready(function () {
         var cursorRequest = index.openCursor();
         cursorRequest.onsuccess = function (event) {
             var cursor = event.target.result;
-            
+
             if (cursor) {
                 if (cursor.value.filename === document.getElementById("workingFile").innerHTML) {
                     count++;
@@ -704,7 +731,7 @@ $(document).ready(function () {
 
 
         };
-        note.innerHTML += '<li style"color : green;">There are ' +count+' previous annotations for this file found in the local database.</li>';
+        note.innerHTML += '<li style"color : green;">There are ' + count + ' previous annotations for this file found in the local database.</li>';
     }
 
     //loads the data from the local database which is then added to the array of shapes and redrawn.
@@ -850,8 +877,10 @@ $(document).ready(function () {
                 dataType: "json",
                 contentType: "application/json",
                 traditional: true,
-                error: function (request) {
-                    alert(request.statusText);
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+
                 },
                 success: function (result) {
                     note.innerHTML += "<li>Annotations successfully saved to server.</li>";
@@ -864,14 +893,14 @@ $(document).ready(function () {
 
     });
     $("#LoadServer").bind("click", function () {
-
+        var annotations = JSON.stringify(JsonArrayOfShapes);
         $.ajax(
             {
 
 
                 url: '/Annotations/GetData',
                 type: 'get',
-                data: {get_param: 'Value'},
+                data: annotations,
                 dataType: "json",
                 contentType: "application/json",
                 traditional: true,
@@ -879,7 +908,7 @@ $(document).ready(function () {
                     alert(request.statusText);
                 },
                 success: function (result) {
-                    note.innerHTML += "<li>Annotations successfully saved to server.</li>";
+                    note.innerHTML += " All annotations loaded from server";
 
                 }
 
@@ -888,6 +917,8 @@ $(document).ready(function () {
 
 
     });
+
+
 
     $("#updateServer").bind("click", function () {
         if (JsonArrayOfShapes !== []) {

@@ -8,6 +8,8 @@ using DicomWebApplicatioj.Models;
 using System.IO;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+
 
 
 
@@ -36,7 +38,23 @@ namespace DicomWebApplicatioj.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-   
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Content("file not selected");
+
+            var path = Path.GetTempFileName();
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return RedirectToAction("Files");
+        }
+
+
 
     }
 }

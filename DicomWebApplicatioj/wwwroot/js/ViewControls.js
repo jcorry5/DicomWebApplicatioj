@@ -3,10 +3,10 @@
 
 
 $(document).ready(function () {
-// configuring view on initilization
+    // configuring view on initilization
     $('#ColourPaletteAcc').hide();
     $('#shapeAccordaian').hide();
-    $('#canvasDiv').hide();
+    $('#canvasWrapper').hide();
     $('#right-side-menu').show();
     $('#controlMenuButton').hide();
     $('#closeImage').hide();
@@ -15,34 +15,47 @@ $(document).ready(function () {
     $('#ServerControls').hide();
     $('#LocalControls').hide();
     $('#right-side-menu').hide();
-//setting up tooltips for annotation controls
+    $('#dicomData').hide();
+    $('#savedAnnotations').hide();
+
+    $('#DicomData').click(function () {
+        $('#dicomData').show();
+        $('#savedAnnotations').hide();
+    });
+
+    $('#AnnotationData').click(function () {
+        $('#dicomData').hide();
+        $('#savedAnnotations').show();
+    });
+
+    //setting up tooltips for annotation controls
     $('[data-toggle="tooltop"]').tooltip();
 
-//toggles the view for the Dicom data
+    //toggles the view for the Dicom data
     $('#DicomDatabtn').click(function () {
         $('#DicomData').show();
         $('#savedAnnotations').hide();
     });
 
 
-//toggles the view for the annotation list from database
+    //toggles the view for the annotation list from database
     $('#AnnotationDatabtn').click(function () {
         $('#savedAnnotations').show();
-     
+
     });
-//toggles the views for the local db controls
+    //toggles the views for the local db controls
     $('#DataControl').click(function () {
         $('#LocalControls').show();
         $('#DatabaseMenu').hide();
     });
 
-//toggles the views for the server controls
+    //toggles the views for the server controls
     $('#ServerControl').click(function () {
         $('#ServerControls').show();
         $('#DatabaseMenu').hide();
     });
 
-//
+    //
     $('#LoadLocal').click(function () {
         $('#LocalControls').show();
         $('#DatabaseMenu').hide();
@@ -58,7 +71,7 @@ $(document).ready(function () {
     });
 
 
-    
+
 
     $('#controlMenuButton').click(function () {
         $('#side-menu').show();
@@ -82,25 +95,25 @@ $(document).ready(function () {
     });
 
     $('#DataControl').click(function () {
-        if($('#data').is(':hidden')){
+        if ($('#data').is(':hidden')) {
             $('#data').show();
-        }else{
+        } else {
             $('#data').hide();
-        }    
+        }
     });
 
     $('#ImageControl').click(function () {
-       
-        if($('#imageControls').is(':hidden')){
+
+        if ($('#imageControls').is(':hidden')) {
             $('#imageControls').show();
             $('#shapeAccordaian').hide();
             $('#ColourPaletteAcc').hide();
-        }else{
+        } else {
             $('#imageControls').hide();
-        }   
+        }
     });
 
-    
+
 
 
 
@@ -117,7 +130,7 @@ $(document).ready(function () {
 
     $('#openTestImage').click(function () {
         openImageDisplay();
-       
+
     });
 
     $('#closeSidebar').click(function () {
@@ -125,7 +138,7 @@ $(document).ready(function () {
     });
 
     function openImageDisplay() {
-        $('#canvasDiv').show();
+        $('#canvasWrapper').show();
         $('#fileSelectdiv').hide();
         $('#closeImage').show();
         $('#right-side-menu').show();
@@ -133,8 +146,8 @@ $(document).ready(function () {
         $('#right-side-menu').show();
     }
 
-   
-    
-    
+
+
+
 });
 

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<DicomWebApplicatioj.Models.Annotation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.filename)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.shape)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.pensize)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.colour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.X)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Y)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastX)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastY)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.labelFormat)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.filename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shape)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pensize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.colour)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.X)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Y)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastX)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.labelFormat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AnnotationNum">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AnnotationNum">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AnnotationNum">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
